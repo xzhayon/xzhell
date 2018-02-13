@@ -1,7 +1,7 @@
 #!/bin/sh
 
 PATH=$PATH:${0%/*}
-source $(realpath ${0%/*}/..)/lib/xzh.sh
+source $(realpath ${0%/*})/../lib/xzh.sh
 
 : ${PG_SH:=zsh bash}
 
