@@ -9,11 +9,12 @@ _error() {
 }
 
 _realpath() {
-	local dir=$(dirname "$1")
-	local target=$(readlink "$1" || echo "$1")
+	local path=${1%/}
+	local dir=$(dirname "$path")
+	local target=$(readlink "$path" || echo "$path")
 
 	_x_is_abs "$target" ||
-	target=$(cd "$dir" && pwd)/${1##*/}
+	target=$(cd "$dir" && pwd)/${path##*/}
 
 	test -f "$target" &&
 	( cd $(dirname "$target")
