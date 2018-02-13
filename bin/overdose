@@ -1,7 +1,8 @@
 #!/bin/sh
 
-PATH=$PATH:${0%/*}
-source $(realpath ${0%/*})/../lib/xzh.sh
+SELF=$(realpath $0)
+PATH=$PATH:${SELF%/*}
+source ${SELF%/*}/../lib/xzh.sh
 
 _x_extend _od_compose
 
