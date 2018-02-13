@@ -44,7 +44,7 @@ _x_is_abs() {
 }
 
 _x_is_cmd() {
-	type $1 2>/dev/null | grep -q "shell function"
+	type $1 2>/dev/null | grep -q "function"
 }
 
 _x_width() {
@@ -201,14 +201,14 @@ __usage_cols() {
 __usage_opts() {
 	test -n "$_OPTS" || return
 
-	echo "\noptions:"
+	printf "\n%s:\n" "options"
 	__usage_cols "$_OPTS"
 }
 
 __usage_cmds() {
 	test -n "$_CMDS" || return
 
-	echo "\ncommands:"
+	printf "\n%s:\n" "commands"
 	__usage_cols "$_CMDS"
 }
 
