@@ -16,6 +16,7 @@ hash git >/dev/null 2>&1 || {
 	env git clone --depth=1 $REMOTE $LOCAL
   fi ) &&
 sed -i.orig 's,source \${0%/\*}/\.\.,source '$LOCAL',' $LOCAL/bin/realpath &&
+rm -f $LOCAL/bin/realpath.orig &&
 mkdir -p $HOME/bin && {
 	for file in $LOCAL/bin/*; do
 		ln -s $LOCAL/bin/${file##*/} bin/ 2>/dev/null || true
