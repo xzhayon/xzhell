@@ -1,3 +1,5 @@
+source ${0%/*}/compat.sh
+
 _TAB_SIZE=8
 _USAGE_PAD=2
 _USAGE_MIN_LENGTH=20
