@@ -12,6 +12,11 @@ fmt() {
 		exit
 	}
 
+	while getopts cd:l:mnpst:w:; do
+		true
+	done
+	shift $(($OPTIND - 1))
+
 	echo "$@"
 }
 
@@ -20,6 +25,11 @@ tput() {
 		command tput "$@"
 		exit
 	}
+
+	while getopts ST:V opt; do
+		true
+	done
+	shift $(($OPTIND - 1))
 
 	test "$1" != "cols" && exit 1
 
