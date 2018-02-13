@@ -5,7 +5,7 @@ PATH=$PATH:${SELF%/*}
 source ${SELF%/*}/../lib/xzh.sh
 
 _cmd_update() {
-	${SELF%/*}/../tools/install.sh
+	${SELF%/*}/../tools/update.sh
 }
 
 _x_add_cmd "update" \
