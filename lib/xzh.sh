@@ -1,5 +1,3 @@
-source ${0%/*}/compat.sh
-
 _TAB_SIZE=8
 _USAGE_PAD=2
 _USAGE_MIN_LENGTH=20
@@ -7,6 +5,26 @@ _USAGE_MIN_LENGTH=20
 _OPTS_PARSED=0
 
 trap _x_die 2
+
+fmt() {
+	which fmt >/dev/null 2>&1 && {
+		command fmt "$@"
+		exit
+	}
+
+	echo "$@"
+}
+
+tput() {
+	which tput >/dev/null 2>&1 && {
+		command tput "$@"
+		exit
+	}
+
+	test "$1" != "cols" && exit 1
+
+	echo 80
+}
 
 _x_is_abs() {
 	case $1 in
