@@ -1,7 +1,8 @@
 #!/bin/sh
 
-PATH=$PATH:${0%/*}
-source ${0%/*}/../lib/xzh.sh
+SELF=$0
+PATH=$PATH:${SELF%/*}
+source ${SELF%/*}/../lib/xzh.sh
 
 _error() {
 	_x_yell $*
