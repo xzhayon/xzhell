@@ -14,7 +14,7 @@ _x_is_abs() {
 }
 
 _x_is_cmd() {
-	declare -f -F $1 >/dev/null
+	type $1 2>/dev/null | grep -q "shell function"
 }
 
 _x_width() {
