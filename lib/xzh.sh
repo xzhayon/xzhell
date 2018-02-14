@@ -15,11 +15,15 @@ _x_is_abs() {
 }
 
 _x_is_cmd() {
-	type $1 2>/dev/null | grep -q "function"
+	case $(type $1 2>/dev/null) in
+	*function*) return 0 ;;
+	esac
+
+	hash $1 >/dev/null 2>&1
 }
 
 _x_width() {
-	echo ${COLUMNS-$(hash tput >/dev/null 2>&1 && tput cols || echo $_COLUMNS)}
+	echo ${COLUMNS-$(_x_is_cmd tput && tput cols || echo $_COLUMNS)}
 }
 
 _x_self() {
@@ -108,7 +112,7 @@ __usage() {
 
 	( ( _x_is_cmd _usage &&
 	    _usage ||
-	    echo usage: $(_x_self)$opts$cmd$args ) | ( hash fmt >/dev/null 2>&1 && fmt -nw $(_x_width) || cat )
+	    echo usage: $(_x_self)$opts$cmd$args ) | ( _x_is_cmd fmt && fmt -nw $(_x_width) || cat )
 
 	  __usage_opts
 	  __usage_cmds ) >&2
@@ -144,7 +148,7 @@ __usage_cols() {
 		sed 's,;;,\
 \
 ,g' |
-		( hash fmt >/dev/null 2>&1 && fmt -nw $col2_size || cat ) |
+		( _x_is_cmd fmt && fmt -nw $col2_size || cat ) |
 		while read desc_line; do
 			test -n "$term" ||
 			test -n "$desc_line" ||
@@ -162,7 +166,7 @@ __usage_cols() {
 			col1_current_size=0
 
 			printf "%${_USAGE_PAD}s%-${col1_current_size}s%s\n" " " "$term" "$desc_line" |
-			( hash fmt >/dev/null 2>&1 && fmt -nw $(_x_width) || cat )
+			( _x_is_cmd fmt && fmt -nw $(_x_width) || cat )
 
 			term=""
 		done
