@@ -119,7 +119,7 @@ __usage() {
 __usage_cols() {
 	local max_length=$(echo "$@" | while read line; do
 		test -n "$line" || continue
-		printf "%s" "${line%%$'\t'*}" | wc -c
+		printf "%s" ${line%%$'\t'*} | wc -c
 	done | sort -nr | head -1)
 
 	local col1_size=$(($_TAB_SIZE * ((($max_length + 1) / $_TAB_SIZE) + 1)))
