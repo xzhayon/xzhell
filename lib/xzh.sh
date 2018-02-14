@@ -1,3 +1,4 @@
+_COLUMNS=80
 _TAB_SIZE=8
 _USAGE_PAD=2
 _USAGE_MIN_LENGTH=20
@@ -5,36 +6,6 @@ _USAGE_MIN_LENGTH=20
 _OPTS_PARSED=0
 
 trap _x_die 2
-
-fmt() {
-	which fmt >/dev/null 2>&1 && {
-		command fmt "$@"
-		exit
-	}
-
-	while getopts cd:l:mnpst:w:; do
-		true
-	done
-	shift $(($OPTIND - 1))
-
-	echo "$@"
-}
-
-tput() {
-	which tput >/dev/null 2>&1 && {
-		command tput "$@"
-		exit
-	}
-
-	while getopts ST:V opt; do
-		true
-	done
-	shift $(($OPTIND - 1))
-
-	test "$1" != "cols" && exit 1
-
-	echo 80
-}
 
 _x_is_abs() {
 	case $1 in
@@ -48,7 +19,7 @@ _x_is_cmd() {
 }
 
 _x_width() {
-	echo ${COLUMNS-$(tput cols)}
+	echo ${COLUMNS-$(hash tput >/dev/null 2>&1 && tput cols || echo $_COLUMNS)}
 }
 
 _x_self() {
@@ -137,7 +108,7 @@ __usage() {
 
 	( ( _x_is_cmd _usage &&
 	    _usage ||
-	    echo usage: $(_x_self)$opts$cmd$args ) | fmt -nw $(_x_width)
+	    echo usage: $(_x_self)$opts$cmd$args ) | ( hash fmt >/dev/null 2>&1 && fmt -nw $(_x_width) || cat )
 
 	  __usage_opts
 	  __usage_cmds ) >&2
@@ -173,7 +144,7 @@ __usage_cols() {
 		sed 's,;;,\
 \
 ,g' |
-		fmt -nw $col2_size |
+		( hash fmt >/dev/null 2>&1 && fmt -nw $col2_size || cat ) |
 		while read desc_line; do
 			test -n "$term" ||
 			test -n "$desc_line" ||
@@ -191,7 +162,7 @@ __usage_cols() {
 			col1_current_size=0
 
 			printf "%${_USAGE_PAD}s%-${col1_current_size}s%s\n" " " "$term" "$desc_line" |
-			fmt -nw $(_x_width)
+			( hash fmt >/dev/null 2>&1 && fmt -nw $(_x_width) || cat )
 
 			term=""
 		done
