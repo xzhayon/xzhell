@@ -8,7 +8,11 @@ _cmd_update() {
 	${SELF%/*}/../tools/update.sh
 }
 
-_x_add_cmd "update" \
+_alias_up() {
+	echo update
+}
+
+_x_add_cmd "update|up" \
 	"Update xzhell"
 
 _x_run_cmd "$@"
