@@ -5,7 +5,7 @@
 : ${TARGET:=$HOME/bin}
 
 BINDIR=$LOCAL/bin
-REALPATH=$BINDIR/realpath
+REALPATH=$BINDIR/realpath.sh
 
 __pull_repository() {
 	cd $LOCAL &&
@@ -26,14 +26,15 @@ _fetch_repository() {
 }
 
 _hardcode_path() {
-	sed -i.orig 's,^SELF=\$0,SELF='$REALPATH',' $REALPATH &&
-	rm -f $REALPATH.orig
+	sed -i.orig 's,^SELF=\$0,SELF='$REALPATH',' $REALPATH
 }
 
 _link_binaries() {
 	mkdir -p $TARGET &&
-	for file in $BINDIR/*; do
-		ln -s $file $TARGET/ 2>/dev/null || true
+	for file in $BINDIR/*.sh; do
+		local cmd=${file##*/}
+		cmd=${cmd%.sh}
+		ln -s $file $TARGET/$cmd 2>/dev/null || true
 	done
 }
 
