@@ -114,7 +114,7 @@ _x_add_opt "-D COMPOSEDIR" \
 	"Home to docker-compose.yml [$(realpath $OD_COMPOSEDIR)]"
 _x_add_opt "-n" \
 	"Show commands without executing them"
-_x_add_opt "-p NAMESPACE:PLUGIN" \
+_x_add_opt "-p [NAMESPACE:]PLUGIN" \
 	"Map commands in file PLUGIN to NAMESPACE (can be used multiple times)"
 
 _x_add_cmd "help" \
