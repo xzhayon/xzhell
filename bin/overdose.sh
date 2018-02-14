@@ -6,7 +6,7 @@ source ${SELF%/*}/../lib/xzh.sh
 
 _x_extend _od_compose
 
-: ${OD_DOCKERDIR:=.}
+: ${OD_COMPOSEDIR:=.}
 : ${OD_SH:=zsh bash}
 
 DOCKER=docker
@@ -23,11 +23,11 @@ _od_docker() {
 
 _od_compose() {
 	test -n "$DRYRUN" &&
-	( echo "cd $OD_DOCKERDIR &&"
+	( echo "cd $OD_COMPOSEDIR &&"
 	  echo $COMPOSE "$@" ) >&2 &&
 	return
 
-	cd $OD_DOCKERDIR &&
+	cd $OD_COMPOSEDIR &&
 	$COMPOSE "$@"
 	status=$?
 	cd - >/dev/null
@@ -66,7 +66,7 @@ _opts() {
 }
 
 _opt_D() {
-	OD_DOCKERDIR="$@"
+	OD_COMPOSEDIR="$@"
 }
 
 _opt_n() {
@@ -110,8 +110,8 @@ _cmd_services() {
 	_od_services
 }
 
-_x_add_opt "-D DOCKERDIR" \
-	"Home to docker-compose.yml [$(realpath $OD_DOCKERDIR)]"
+_x_add_opt "-D COMPOSEDIR" \
+	"Home to docker-compose.yml [$(realpath $OD_COMPOSEDIR)]"
 _x_add_opt "-n" \
 	"Show commands without executing them"
 _x_add_opt "-p NAMESPACE:PLUGIN" \
