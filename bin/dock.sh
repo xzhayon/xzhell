@@ -61,7 +61,7 @@ _x_add_opt "-C" \
 	"Do not remove the image"
 _x_add_opt "-n" \
 	"Show commands without executing them"
-_x_add_opt "-v VOLUME" \
+_x_add_opt "-v [SOURCE:]TARGET[:OPTIONS]" \
 	"Bind mount a volume (can be used multiple times)"
 
 _x_run "$@"
