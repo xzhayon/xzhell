@@ -129,7 +129,9 @@ __usage_cols() {
 	local col1_size=$(($_TAB_SIZE * ((($max_length + 1) / $_TAB_SIZE) + 1)))
 	local col2_size=$(($(_x_width) - $col1_size - $_USAGE_PAD))
 
-	test $col2_size -lt $_USAGE_MIN_LENGTH &&
+	_x_is_cmd fmt
+	( test $? -ne 0 ||
+	  test $col2_size -lt $_USAGE_MIN_LENGTH ) &&
 	col2_size=$(($(_x_width) - $_USAGE_PAD * 2)) &&
 	local is_small=1
 
