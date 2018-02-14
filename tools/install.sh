@@ -2,18 +2,41 @@
 
 : ${REMOTE:=https://github.com/xzhavilla/xzhell.git}
 : ${LOCAL:=$HOME/.xzhell}
+: ${TARGET:=$HOME/bin}
 
-( if test -d $LOCAL; then
+BINDIR=$LOCAL/bin
+REALPATH=$BINDIR/realpath
+
+__pull_repository() {
 	cd $LOCAL &&
-	git checkout . &&
+	env git checkout . &&
 	env git pull --rebase --stat origin master
-  else
+}
+
+__clone_repository() {
 	env git clone --depth=1 $REMOTE $LOCAL
-  fi ) &&
-sed -i.orig 's,^SELF=\$0,SELF='$LOCAL/bin/realpath',' $LOCAL/bin/realpath &&
-rm -f $LOCAL/bin/realpath.orig &&
-mkdir -p $HOME/bin && {
-	for file in $LOCAL/bin/*; do
-		ln -s $LOCAL/bin/${file##*/} bin/ 2>/dev/null || true
+}
+
+_fetch_repository() {
+	if test -d $LOCAL; then
+		__pull_repository
+	else
+		__clone_repository
+	fi
+}
+
+_hardcode_path() {
+	sed -i.orig 's,^SELF=\$0,SELF='$REALPATH',' $REALPATH &&
+	rm -f $REALPATH.orig
+}
+
+_link_binaries() {
+	mkdir -p $TARGET &&
+	for file in $BINDIR/*; do
+		ln -s $file $TARGET/ 2>/dev/null || true
 	done
 }
+
+_fetch_repository &&
+_hardcode_path &&
+_link_binaries
