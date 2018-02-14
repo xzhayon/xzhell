@@ -3,11 +3,6 @@
 : ${REMOTE:=https://github.com/xzhavilla/xzhell.git}
 : ${LOCAL:=$HOME/.xzhell}
 
-hash git >/dev/null 2>&1 || {
-	echo xzh: git: command not found 2>/dev/null
-	exit 127
-}
-
 ( if test -d $LOCAL; then
 	cd $LOCAL &&
 	git checkout . &&
