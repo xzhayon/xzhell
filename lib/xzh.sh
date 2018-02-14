@@ -56,51 +56,51 @@ _x_min_args() {
 }
 
 _x_namespace() {
-    _x_no_execute && return
-    _NS=$1
+	_x_no_execute && return
+	_NS=$1
 }
 
 _x_require() {
-    local _x_ns=_
-    __import "$1"
-    _x_ns=
+	local _x_ns=_
+	__import "$1"
+	_x_ns=
 }
 
 _x_no_execute() {
-    test "$_x_ns" = "_"
+	test "$_x_ns" = "_"
 }
 
 _x_extend() {
-    _x_no_execute && return
+	_x_no_execute && return
 	_CMD_EXTENDED="$@"
 }
 
 _x_use() {
-    _x_no_execute && return
+	_x_no_execute && return
 
-    local file="${1##*:}"
-    local ns=${1%%:*}
-    test "$ns" = "$file" && ns=
+	local file="${1##*:}"
+	local ns=${1%%:*}
+	test "$ns" = "$file" && ns=
 
-    local _x_ns
-    test -n "$ns" && _x_ns="$ns:" || _x_ns=
-    __import "$file"
-    _x_ns=
+	local _x_ns
+	test -n "$ns" && _x_ns="$ns:" || _x_ns=
+	__import "$file"
+	_x_ns=
 
-    test -n "$_NS" &&
-    eval "_NS_$ns=${_NS}_"
-    _NS=
+	test -n "$_NS" &&
+	eval "_NS_$ns=${_NS}_"
+	_NS=
 }
 
 __import() {
-    local filename="${1##*/}"
+	local filename="${1##*/}"
 
-    case "$_FILES_IMPORTED" in
-    *" $filename "*) return ;;
-    esac
+	case "$_FILES_IMPORTED" in
+	*" $filename "*) return ;;
+	esac
 
-    _FILES_IMPORTED="$_FILES_IMPORTED  $filename  "
-    source "$1"
+	_FILES_IMPORTED="$_FILES_IMPORTED  $filename  "
+	source "$1"
 }
 
 __usage() {
@@ -111,8 +111,8 @@ __usage() {
 	args=" [ARGS]"
 
 	( ( _x_is_cmd _usage &&
-	    _usage ||
-	    echo usage: $(_x_self)$opts$cmd$args ) | ( _x_is_cmd fmt && fmt -nw $(_x_width) || cat )
+		_usage ||
+		echo usage: $(_x_self)$opts$cmd$args ) | ( _x_is_cmd fmt && fmt -nw $(_x_width) || cat )
 
 	  __usage_opts
 	  __usage_cmds ) >&2
@@ -190,12 +190,12 @@ __usage_cmds() {
 }
 
 _x_add_opt() {
-    _x_no_execute && return
+	_x_no_execute && return
 	_OPTS="$_OPTS$1"$'\t'"$2"$'\n'
 }
 
 _x_add_cmd() {
-    _x_no_execute && return
+	_x_no_execute && return
 	_CMDS="$_CMDS$1"$'\t'"$2"$'\n'
 }
 
@@ -217,14 +217,14 @@ __parse_opts() {
 }
 
 _x_parse_opts() {
-    _x_no_execute && return
+	_x_no_execute && return
 
 	__parse_opts "" "$@"
 	_OPTS_PARSED=$?
 }
 
 _x_run() {
-    _x_no_execute && return
+	_x_no_execute && return
 
 	shift $_OPTS_PARSED
 	__parse_opts "" "$@"
@@ -235,9 +235,9 @@ _x_run() {
 }
 
 _x_run_cmd() {
-    _x_no_execute && return
+	_x_no_execute && return
 
-    shift $_OPTS_PARSED
+	shift $_OPTS_PARSED
 	__parse_opts "" "$@"
 	shift $?
 
