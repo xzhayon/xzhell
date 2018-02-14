@@ -138,7 +138,7 @@ __usage_cols() {
 
 		test -n "$is_small" &&
 		test -n "$desc" &&
-		desc="\n$desc\n\n."
+		desc=$'\n'"$desc"$'\n\n.'
 
 		echo "$desc" |
 		sed 's,;;,\
@@ -172,25 +172,25 @@ __usage_cols() {
 __usage_opts() {
 	test -n "$_OPTS" || return
 
-	printf "\n%s:\n" "options"
+	printf "\noptions:\n"
 	__usage_cols "$_OPTS"
 }
 
 __usage_cmds() {
 	test -n "$_CMDS" || return
 
-	printf "\n%s:\n" "commands"
+	printf "\ncommands:\n"
 	__usage_cols "$_CMDS"
 }
 
 _x_add_opt() {
     _x_no_execute && return
-	_OPTS="$_OPTS$1\t$2\n"
+	_OPTS="$_OPTS$1"$'\t'"$2"$'\n'
 }
 
 _x_add_cmd() {
     _x_no_execute && return
-	_CMDS="$_CMDS$1\t$2\n"
+	_CMDS="$_CMDS$1"$'\t'"$2"$'\n'
 }
 
 __parse_opts() {
