@@ -1,3 +1,6 @@
+_XZH=$(realpath $(which xzh))
+: ${XZH_IMPORTDIR:=${_XZH%/*}/../libexec}
+
 _COLUMNS=80
 _TAB_SIZE=8
 _USAGE_PAD=2
@@ -93,14 +96,19 @@ _x_use() {
 }
 
 __import() {
-	local filename="${1##*/}"
+	local file
+
+	test -f $1 &&
+	file=$1 ||
+	file=$XZH_IMPORTDIR/$1
+	file=$(realpath $file)
 
 	case "$_FILES_IMPORTED" in
-	*" $filename "*) return ;;
+	*" $file "*) return ;;
 	esac
 
-	_FILES_IMPORTED="$_FILES_IMPORTED  $filename  "
-	source "$1"
+	_FILES_IMPORTED="$_FILES_IMPORTED  $file  "
+	source "$file"
 }
 
 __usage() {
