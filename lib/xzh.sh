@@ -100,7 +100,7 @@ __import() {
 
 	test -f $1 &&
 	file=$1 ||
-	file=$XZH_IMPORTDIR/$1
+	file=$XZH_IMPORTDIR/${1%.sh}.sh
 	file=$(realpath $file)
 
 	case "$_FILES_IMPORTED" in
