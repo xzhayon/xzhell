@@ -2,6 +2,7 @@
 
 SELF=$0
 PATH=$PATH:${SELF%/*}
+_XZH=${SELF%/*}/xzh
 source ${SELF%/*}/../lib/xzh.sh
 
 _error() {

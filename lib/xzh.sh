@@ -1,4 +1,4 @@
-_XZH=$(realpath $(which xzh))
+_XZH=${_XZH:-$(realpath $(which xzh))}
 : ${XZH_IMPORTDIR:=${_XZH%/*}/../libexec}
 
 _COLUMNS=80
