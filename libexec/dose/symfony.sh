@@ -93,7 +93,7 @@ _x_add_opt "-S SYMFONYDIR" \
 	"Symfony directory in Docker container [$SYMFONY_GUESTDIR]"
 
 _x_add_cmd "${_x_ns}shell|${_x_ns}sh [-u USER] [CONTAINER]" \
-	"Log into a container [${SYMFONY_CONTAINER:-Symfony's}];;
+	"Log into a container [${SYMFONY_CONTAINER:-"Symfony's"}];;
 -u Username or UID"
 _x_add_cmd "${_x_ns}composer [COMMAND [ARGS]]" \
 	"Run Composer"
