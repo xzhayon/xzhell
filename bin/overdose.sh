@@ -85,6 +85,14 @@ _alias_sh() {
 	echo shell
 }
 
+_opts_shell() {
+	echo u:
+}
+
+_opt_shell_u() {
+	_opt_exec_u "$@"
+}
+
 _cmd_exec() {
 	_x_min_args 2 $#
 	_od_exec "$@"
@@ -119,8 +127,9 @@ _x_add_opt "-p [NAMESPACE:]PLUGIN" \
 
 _x_add_cmd "help" \
 	"List docker-compose(1) commands"
-_x_add_cmd "shell|sh CONTAINER" \
-	"Log into a running container"
+_x_add_cmd "shell|sh [-u USER] CONTAINER" \
+	"Log into a running container;;\
+-u Username or UID"
 _x_add_cmd "exec|x [-d] [-u USER] CONTAINER COMMAND [ARGS]" \
 	"Execute a command inside a container;;\
 -d Run command in the background;;\
