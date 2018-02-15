@@ -96,7 +96,7 @@ _x_add_cmd "${_x_ns}shell|${_x_ns}sh [-u USER] [CONTAINER]" \
 	"Log into a container [${SYMFONY_CONTAINER:-"Symfony's"}];;\
 -u Username or UID"
 _x_add_cmd "${_x_ns}composer [COMMAND [ARGS]]" \
-	"Run Composer"
+	"Run Composer into Symfony container"
 _x_add_cmd "${_x_ns}symfony|${_x_ns}sf [COMMAND [ARGS]]" \
 	"Execute Symfony command"
 _x_add_cmd "${_x_ns}cache" \
