@@ -34,6 +34,7 @@ _symfony_cache() {
 	_symfony_console cache:clear
 	status=$?
 
+	test -n "$DRYRUN" ||
 	_symfony_console | grep -q doctrine:cache ||
 	return $status
 
