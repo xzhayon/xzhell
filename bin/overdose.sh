@@ -126,7 +126,7 @@ _x_add_opt "-p [NAMESPACE:]PLUGIN" \
 	"Map commands in file PLUGIN to NAMESPACE (can be used multiple times)"
 
 _x_add_cmd "help" \
-	"List docker-compose(1) commands"
+	"List Docker Compose commands"
 _x_add_cmd "shell|sh [-u USER] CONTAINER" \
 	"Log into a running container;;\
 -u Username or UID"
