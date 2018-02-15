@@ -32,6 +32,14 @@ _symfony_console() {
 
 _symfony_cache() {
 	_symfony_console cache:clear
+	status=$?
+
+	_symfony_console | grep -q doctrine:cache ||
+	return $status
+
+	_symfony_console doctrine:cache:clear-metadata
+	_symfony_console doctrine:cache:clear-query
+	_symfony_console doctrine:cache:clear-result
 }
 
 symfony_opts=$(_opts)
