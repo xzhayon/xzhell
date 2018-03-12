@@ -45,15 +45,11 @@ _symfony_cache() {
 
 symfony_opts=$(_opts)
 _opts() {
-	echo C:S:$symfony_opts
-}
-
-_opt_C() {
-	SYMFONY_CONTAINER=$1
+	echo S:$symfony_opts
 }
 
 _opt_S() {
-	SYMFONY_GUESTDIR=$1
+	SYMFONY_CONTAINER=$1
 }
 
 _cmd_symfony_shell() {
@@ -88,10 +84,8 @@ _cmd_symfony_cache() {
 	_symfony_cache
 }
 
-_x_add_opt "-C CONTAINER" \
+_x_add_opt "-S CONTAINER" \
 	"Docker container running Symfony [${SYMFONY_CONTAINER:-auto}]"
-_x_add_opt "-S SYMFONYDIR" \
-	"Symfony directory in Docker container [$SYMFONY_GUESTDIR]"
 
 _x_add_cmd "${_x_ns}shell|${_x_ns}sh [-u USER] [CONTAINER]" \
 	"Log into a container [${SYMFONY_CONTAINER:-"Symfony's"}];;\
