@@ -38,9 +38,15 @@ _symfony_cache() {
 	_symfony_console | grep -q doctrine:cache ||
 	return $status
 
-	_symfony_console doctrine:cache:clear-metadata
-	_symfony_console doctrine:cache:clear-query
-	_symfony_console doctrine:cache:clear-result
+	_symfony_doctrine cache:clear-metadata
+	_symfony_doctrine cache:clear-query
+	_symfony_doctrine cache:clear-result
+}
+
+_symfony_doctrine() {
+	_x_min_args 1 $#
+
+	_symfony_console "doctrine:$@"
 }
 
 symfony_opts=$(_opts)
@@ -84,6 +90,10 @@ _cmd_symfony_cache() {
 	_symfony_cache
 }
 
+_cmd_symfony_doctrine() {
+	_symfony_doctrine "$@"
+}
+
 _x_add_opt "-S CONTAINER" \
 	"Docker container running Symfony [${SYMFONY_CONTAINER:-auto}]"
 
@@ -96,3 +106,5 @@ _x_add_cmd "${_x_ns}symfony|${_x_ns}sf [COMMAND [ARGS]]" \
 	"Execute Symfony command"
 _x_add_cmd "${_x_ns}cache" \
 	"Clear Symfony cache"
+_x_add_cmd "${_x_ns}doctrine COMMAND [ARGS]" \
+	"Execute Doctrine command"
