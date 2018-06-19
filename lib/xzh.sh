@@ -135,9 +135,9 @@ __usage() {
 }
 
 __usage_cols() {
-	local max_length=$(echo "$@" | while read line; do
+	local max_length=$(echo "$@" | while IFS= read line; do
 		test -n "$line" || continue
-		printf "%s" ${line%%$'\t'*} | wc -c
+		printf "%s" ${line%%$(printf '\t')*} | wc -c
 	done | sort -nr | head -1)
 
 	local col1_size=$(($_TAB_SIZE * ((($max_length + 1) / $_TAB_SIZE) + 1)))
@@ -149,23 +149,23 @@ __usage_cols() {
 	col2_size=$(($(_x_width) - $_USAGE_PAD * 2)) &&
 	local is_small=1
 
-	echo "$@" | while read line; do
+	echo "$@" | while IFS= read line; do
 		test -n "$line" || continue
 
-		term=${line%%$'\t'*}
-		desc=${line#*$'\t'}
+		term=${line%%$(printf '\t')*}
+		desc=${line#*$(printf '\t')}
 		test "$desc" = "$term" && desc=""
 
 		test -n "$is_small" &&
 		test -n "$desc" &&
-		desc=$'\n'"$desc"$'\n\n.'
+		desc="\n$desc\n\n."
 
 		echo "$desc" |
 		sed 's,;;,\
 \
 ,g' |
 		__fmt $col2_size |
-		while read desc_line; do
+		while IFS= read desc_line; do
 			test -n "$term" ||
 			test -n "$desc_line" ||
 			continue
@@ -205,12 +205,12 @@ __usage_cmds() {
 
 _x_add_opt() {
 	_x_no_execute && return
-	_OPTS="$_OPTS$1"$'\t'"$2"$'\n'
+	_OPTS="$_OPTS$1\t$2\n"
 }
 
 _x_add_cmd() {
 	_x_no_execute && return
-	_CMDS="$_CMDS$1"$'\t'"$2"$'\n'
+	_CMDS="$_CMDS$1\t$2\n"
 }
 
 __parse_opts() {
