@@ -108,7 +108,7 @@ __import() {
 	esac
 
 	_FILES_IMPORTED="$_FILES_IMPORTED  $file  "
-	source "$file"
+	. "$file"
 }
 
 __usage() {

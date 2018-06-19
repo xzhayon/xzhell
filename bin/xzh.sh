@@ -2,7 +2,7 @@
 
 SELF=$(realpath $0)
 PATH=$PATH:${SELF%/*}
-source ${SELF%/*}/../lib/xzh.sh
+. ${SELF%/*}/../lib/xzh.sh
 
 _cmd_update() {
 	${SELF%/*}/../tools/update.sh
