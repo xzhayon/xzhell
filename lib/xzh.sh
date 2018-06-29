@@ -209,8 +209,10 @@ _x_add_opt() {
 }
 
 _x_add_cmd() {
-	_x_no_execute && return
-	_CMDS="$_CMDS$1\t$2\n"
+	_x_no_execute && returno
+
+	local cmd=${1%% *}
+	_CMDS="$(echo "$_CMDS" | grep -v "^${cmd%%|*}[ |]")\n$1\t$2"
 }
 
 __parse_opts() {
