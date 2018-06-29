@@ -19,7 +19,9 @@ _symfony_container() {
 }
 
 _symfony_exec() {
-	_od_exec ${SYMFONY_CONTAINER:-$(_symfony_container)} "$@"
+	_x_min_args 1 $#
+
+	_od_exec ${symfony_exec_CONTAINER:-${SYMFONY_CONTAINER:-$(_symfony_container)}} "$@"
 }
 
 _symfony_composer() {
@@ -74,6 +76,30 @@ _opt_symfony_shell_u() {
 	_opt_exec_u "$@"
 }
 
+_cmd_symfony_exec() {
+	_symfony_exec "$@"
+}
+
+_alias_symfony_x() {
+	echo symfony_exec
+}
+
+_opts_symfony_exec() {
+	echo "c:du:"
+}
+
+_opt_symfony_exec_c() {
+	symfony_exec_CONTAINER="$@"
+}
+
+_opt_symfony_exec_d() {
+	_opt_exec_d "$@"
+}
+
+_opt_symfony_exec_u() {
+	_opt_exec_u "$@"
+}
+
 _cmd_symfony_composer() {
 	_symfony_composer "$@"
 }
@@ -99,6 +125,11 @@ _x_add_opt "-S CONTAINER" \
 
 _x_add_cmd "${_x_ns}shell|${_x_ns}sh [-u USER] [CONTAINER]" \
 	"Log into a container [${SYMFONY_CONTAINER:-"Symfony's"}];;\
+-u Username or UID"
+_x_add_cmd "${_x_ns}exec|${_x_ns}x [-d] [-c CONTAINER] [-u USER] COMMAND [ARGS]" \
+	"Execute a command inside a container [${SYMFONY_CONTAINER:-"Symfony's"}];;\
+-c Choose a different container;;\
+-d Run command in the background;;\
 -u Username or UID"
 _x_add_cmd "${_x_ns}composer [COMMAND [ARGS]]" \
 	"Run Composer into Symfony container"
