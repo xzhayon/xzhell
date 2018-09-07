@@ -37,7 +37,7 @@ _symfony_cache() {
 	status=$?
 
 	test -n "$DRYRUN" ||
-	_symfony_console | grep -q doctrine:cache ||
+	_symfony_console 2>/dev/null | grep doctrine:cache >/dev/null ||
 	return $status
 
 	_symfony_doctrine cache:clear-metadata
