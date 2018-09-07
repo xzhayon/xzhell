@@ -7,7 +7,6 @@ PATH=$PATH:${SELF%/*}
 _x_extend _od_compose
 
 : ${OD_DOCKERDIR:=.}
-: ${OD_K8SPOD:=}
 : ${OD_SH:=zsh bash}
 
 DOCKER=docker
@@ -45,12 +44,15 @@ _od_k8s() {
 }
 
 _od_pod() {
+	test -z $exec_POD ||
+	return 0
+
 	_x_min_args 1 $#
 
 	local pod=$1 pods npods
 
 	test -n "$DRYRUN" &&
-	echo $pod &&
+	exec_POD=$pod &&
 	return
 
 	printf 'Searching for pod "%s"...' "$pod" >&2
@@ -65,14 +67,14 @@ _od_pod() {
 	echo >&2 && _x_yell too many pods: $(echo $pods) &&
 	return 1
 
-	printf "\b\b\b: %s\n" "$pods" >&2
-	echo $pods
+	exec_POD=$pods
+	printf "\b\b\b: %s\n" "$exec_POD" >&2
 }
 
 _od_exec() {
 	_x_min_args 1 $#
 
-	if test -n $OD_K8SPOD; then
+	if ! test -z $OD_K8SPOD; then
 		_od_kexec "$OD_K8SPOD" "$@"
 		return $?
 	fi
@@ -99,17 +101,17 @@ _od_kexec() {
 	local pod=$1 container=$2
 	shift 2
 
-	pod=$(_od_pod $pod) || _x_die
+	_od_pod $pod || _x_die
 
 	if test $# -eq 0; then
-		_od_k8s exec $pod -it -c $container -- sh -c "$SHELLS"
+		_od_k8s exec $exec_POD -it -c $container -- sh -c "$SHELLS"
 		return
 	fi
 
 	if _x_is_piped_in; then
-		_od_k8s exec $pod -i -c $container -- "$@"
+		_od_k8s exec $exec_POD -i -c $container -- "$@"
 	else
-		_od_k8s exec $pod -it -c $container -- "$@"
+		_od_k8s exec $exec_POD -it -c $container -- "$@"
 	fi
 }
 
