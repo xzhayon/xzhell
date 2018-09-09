@@ -52,11 +52,11 @@ _od_pod() {
 	local pod=$1 pods npods
 
 	test -n "$DRYRUN" &&
-	exec_POD=$pod &&
+	exec_POD='$pod' &&
 	return
 
-	printf 'Searching for pod "%s"...' "$pod" >&2
-	pods=$(_od_k8s get pods --no-headers | grep "^$pod" | cut -d " " -f 1)
+	printf 'Searching for pod "%s"... \n' "$pod" >&2
+	pods=$(_od_k8s get pods --no-headers | grep "^$pod" | cut -d " " -f 1) && printf "\b" >&2
 	npods=$(echo "$pods" | grep -c .)
 
 	test $npods -lt 1 &&
@@ -68,7 +68,7 @@ _od_pod() {
 	return 1
 
 	exec_POD=$pods
-	printf "\b\b\b: %s\n" "$exec_POD" >&2
+	printf '\rSearching for pod "%s": %s\n' "$pod" "$exec_POD" >&2
 }
 
 _od_exec() {
