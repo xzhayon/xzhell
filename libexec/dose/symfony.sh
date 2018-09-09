@@ -9,19 +9,31 @@ SYMFONY_COMPOSER=composer
 SYMFONY_CONSOLE=bin/console
 
 _symfony_container() {
-	echo Searching for Symfony container... >&2
+	test -n "$DRYRUN" &&
+	echo '$container' &&
+	return
+
+	printf "Searching for Symfony container... " >&2
 
 	for service in $(_od_services); do
-		_od_exec $service test -e $SYMFONY_GUESTDIR/$SYMFONY_HINT 2>/dev/null &&
+		_od_compose exec $service test -e $SYMFONY_GUESTDIR/$SYMFONY_HINT 2>/dev/null &&
+		printf "\b\b\b\b: %s\n" "$service" >&2 &&
 		echo $service &&
-		break
+		return
 	done
+
+	echo >&2
+	_x_yell container not found
+	return 1
 }
 
 _symfony_exec() {
 	_x_min_args 1 $#
 
-	_od_exec ${symfony_exec_CONTAINER:-${SYMFONY_CONTAINER:-$(_symfony_container)}} "$@"
+	: ${symfony_exec_CONTAINER:=${SYMFONY_CONTAINER:-$(_symfony_container)}}
+	test -z $symfony_exec_CONTAINER && exit 1
+
+	_od_exec $symfony_exec_CONTAINER "$@"
 }
 
 _symfony_composer() {
@@ -61,7 +73,12 @@ _opt_S() {
 }
 
 _cmd_symfony_shell() {
-	_od_shell ${1:-${SYMFONY_CONTAINER:-$(_symfony_container)}}
+	local container=$1
+
+	: ${container:=${SYMFONY_CONTAINER:-$(_symfony_container)}}
+	test -z $container && exit 1
+
+	_od_shell $container
 }
 
 _alias_symfony_sh() {
