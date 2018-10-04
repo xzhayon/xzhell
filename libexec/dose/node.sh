@@ -5,6 +5,7 @@ _x_namespace node
 : ${NODE_GUESTDIR:=.}
 
 NODE_HINT=package.json
+NODE_NPM=npm
 NODE_YARN=yarn
 
 _node_container() {
@@ -19,6 +20,10 @@ _node_container() {
 
 _node_exec() {
 	_od_exec ${NODE_CONTAINER:-$(_node_container)} "$@"
+}
+
+_node_npm() {
+	_node_exec $NODE_NPM "$@"
 }
 
 _node_yarn() {
@@ -50,6 +55,10 @@ _opt_node_shell_u() {
 	_opt_exec_u "$@"
 }
 
+_cmd_node_npm() {
+	_node_npm "$@"
+}
+
 _cmd_node_yarn() {
 	_node_yarn "$@"
 }
@@ -60,5 +69,7 @@ _x_add_opt "-N CONTAINER" \
 _x_add_cmd "${_x_ns}shell|${_x_ns}sh [-u USER] [CONTAINER]" \
 	"Log into a container [${NODE_CONTAINER:-"Node's"}];;\
 -u Username or UID"
+_x_add_cmd "${_x_ns}npm [COMMAND [ARGS]]" \
+	"Run NPM into Node container"
 _x_add_cmd "${_x_ns}yarn [COMMAND [ARGS]]" \
 	"Run Yarn into Node container"
