@@ -1,5 +1,5 @@
 # xzhell
-A set of utilities for the modern developer, to deal with everyday's virtualization.
+A set of utilities to help modern developers deal with everyday's virtualization.
 
 ## Installation
 A remote script must be executed by hand:
@@ -8,7 +8,7 @@ $ sh -c "$(curl -fsSL https://raw.githubusercontent.com/xzhavilla/xzhell/master/
 ```
 From now on, `xzh up` can be used to get new updates.
 
-## Tools
+## Usage
 - [dock](#dock)
 - [overdose](#overdose)
 
@@ -62,7 +62,7 @@ usage: overdose [OPTIONS] COMMAND [ARGS]
 
 options:
   -D DOCKERDIR            Home to docker-compose.yaml [working directory]
-  -K K8SPOD               Optional Kubernetes pod to interact with [none]
+  -K [NAMESPACE/]K8SPOD   Optional Kubernetes pod to interact with [none]
   -n                      Show commands without executing them
   -p [NAMESPACE:]PLUGIN   Map commands in file PLUGIN to NAMESPACE (can be used multiple times)
 
@@ -75,7 +75,7 @@ commands:
                                                   -u Username or UID
   services                                        List services
 ```
-The tool is extremely helpful to access virtual environments from any path.
+The tool is extremely helpful to access virtual environments from any path:
 ```
 $ ls $appDir
 docker-compose.yaml ...
@@ -95,7 +95,7 @@ usage: overdose [OPTIONS] COMMAND [ARGS]
 
 options:
   -D DOCKERDIR            Home to docker-compose.yaml [$appDir]
-  -K K8SPOD               Optional Kubernetes pod to interact with [none]
+  -K [NAMESPACE/]K8SPOD   Optional Kubernetes pod to interact with [none]
   -n                      Show commands without executing them
   -p [NAMESPACE:]PLUGIN   Map commands in file PLUGIN to NAMESPACE (can be used multiple times)
   -N CONTAINER            Docker container running Node [web]
@@ -118,19 +118,26 @@ $ app npm update
 $ app app:fixtures
 ```
 
-#### Kubernetes (experimental)
-Most commands can be run on a Kubernetes pod specifying (at least) part of its name via the `-K` option. If the name is ambiguous, `overdose` will show a list of choices.
+#### Kubernetes
+Most commands can be run on a Kubernetes pod specifying part of its name via the `-K` option. If the name is ambiguous, `overdose` will show a list of choices.
 ```
 $ overdose -Kapp sh $container
-Searching for pod "app"... 
-
+Searching for pod "app" in namespace "app"... 
 overdose: too many pods: app-staging app-test
 $ overdose -Kapp-t sh $container
-Searching for pod "app-t"... 
-Searching for pod "app-t": app-test
-$ uberdose -Kapp-t x $container uname -a
-Searching for pod "app-t"... 
-Searching for pod "app-t": app-test
-Linux app-test 4.19.121-linuxkit #1 SMP Tue Dec 1 17:50:32 UTC 2020 x86_64 Linux
+Searching for pod "app-t" in namespace "app": app-test
 / $
+$ uberdose -Kapp-t x $container uname -a
+Searching for pod "app-t" in namespace "app": app-test
+Linux app-test 4.19.121-linuxkit #1 SMP Tue Dec 1 17:50:32 UTC 2020 x86_64 Linux
+$ uberdose -Kapp-t -pdose/symfony sh
+Searching for pod "app-t" in namespace "app": app-tet
+Searching for Symfony container: web
+/ $
+```
+The working namespace will be used, unless explicitly specified:
+```
+$ uberdose -Kapp-test/app-t sh $container
+Searching for pod "app-t" in namespace "app-test"...
+uberdose: pod not found
 ```
