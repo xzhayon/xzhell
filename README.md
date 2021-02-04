@@ -34,10 +34,10 @@ Status: Downloaded newer image for alpine:latest
 ```
 ...and with local builds...
 ```
-$ ls docker
+$ ls $dir
 Dockerfile ...
 
-$ dock docker
+$ dock $dir
 [+] Building...
 / #
 ```
