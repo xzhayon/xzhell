@@ -93,13 +93,13 @@ $ app sh -uroot $container
 #### Plugins
 `overdose` can be extended via plugins (_doses_). Apart from those shipped with the tool (`dose/node`, `dose/symfony`), _doses_ can be written to fulfill any kind of task.
 ```
-$ alias app='overdose -D$appDir -pdose/node -Nweb -papp:$appDir/dose.sh'
+$ alias app='overdose -D$appDir -pdose/node -Nweb -papp:$dir/dose.sh'
 
 $ app
 usage: overdose [OPTIONS] COMMAND [ARGS]
 
 options:
-  -D DOCKERDIR            Home to docker-compose.yaml [$appDir]
+  -D DOCKERDIR            Home to docker-compose.yaml [$dir]
   -K [NAMESPACE/]K8SPOD   Optional Kubernetes pod to interact with [none]
   -n                      Show commands without executing them
   -p [NAMESPACE:]PLUGIN   Map commands in file PLUGIN to NAMESPACE (can be used multiple times)
