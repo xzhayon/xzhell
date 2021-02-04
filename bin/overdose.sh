@@ -185,7 +185,7 @@ _cmd_services() {
 }
 
 _x_add_opt "-D DOCKERDIR" \
-	"Home to docker-compose.yml [$(realpath $OD_DOCKERDIR)]"
+	"Home to docker-compose.yaml [$(realpath $OD_DOCKERDIR)]"
 _x_add_opt "-K K8SPOD" \
 	"Optional Kubernetes pod to interact with [${OD_K8SPOD:-none}]"
 _x_add_opt "-n" \
