@@ -37,10 +37,10 @@ _od_compose() {
 
 _od_k8s() {
 	test -n "$DRYRUN" &&
-	echo $K8S "$@" >&2 &&
+	echo $K8S -n "$k8s_NS" "$@" >&2 &&
 	return
 
-	$K8S "$@"
+	$K8S -n "$k8s_NS" "$@"
 }
 
 _od_pod() {
@@ -49,13 +49,16 @@ _od_pod() {
 
 	_x_min_args 1 $#
 
-	local pod=$1 pods npods
+	local namespace=${1%/*} pod=${1#*/} pods npods
+	test "$namespace" = "$pod" && namespace=
 
 	test -n "$DRYRUN" &&
+	k8s_NS='$namespace' &&
 	k8s_POD='$pod' &&
 	return
 
-	printf 'Searching for pod "%s"... ' "$pod" >&2
+	: ${k8s_NS:=${namespace:-$(_od_k8s config view --minify | awk '/namespace/ { print $2 }')}}
+	printf 'Searching for pod "%s" in namespace "%s"... ' "$pod" "$k8s_NS" >&2
 	pods=$(_od_k8s get pods --no-headers | grep "^$pod" | cut -d " " -f 1) >&2
 	npods=$(echo "$pods" | grep -c .)
 
@@ -192,7 +195,7 @@ _cmd_services() {
 
 _x_add_opt "-D DOCKERDIR" \
 	"Home to docker-compose.yaml [$(realpath $OD_DOCKERDIR)]"
-_x_add_opt "-K K8SPOD" \
+_x_add_opt "-K [NAMESPACE/]K8SPOD" \
 	"Optional Kubernetes pod to interact with [${OD_K8SPOD:-none}]"
 _x_add_opt "-n" \
 	"Show commands without executing them"
