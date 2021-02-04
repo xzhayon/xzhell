@@ -36,6 +36,7 @@ Status: Downloaded newer image for alpine:latest
 ```
 $ ls docker
 Dockerfile ...
+
 $ dock docker
 [+] Building...
 / #
@@ -77,12 +78,16 @@ commands:
 ```
 The tool is extremely helpful to access virtual environments from any path:
 ```
-$ ls $appDir
+$ ls $dir
 docker-compose.yaml ...
-$ alias app='overdose -D$appDir'
+
+$ alias app='overdose -D$dir'
+
 $ cd /
+
 $ app up -d --build
 ...
+
 $ app sh -uroot $container
 ```
 
@@ -90,6 +95,7 @@ $ app sh -uroot $container
 `overdose` can be extended via plugins (_doses_). Apart from those shipped with the tool (`dose/node`, `dose/symfony`), _doses_ can be written to fulfill any kind of task.
 ```
 $ alias app='overdose -D$appDir -pdose/node -Nweb -papp:$appDir/dose.sh'
+
 $ app
 usage: overdose [OPTIONS] COMMAND [ARGS]
 
@@ -113,8 +119,10 @@ commands:
   yarn [COMMAND [ARGS]]                                   Run Yarn into Node container
   app:fixtures                                            Load database fixtures
   app:...
+
 $ app npm update
 ...
+
 $ app app:fixtures
 ```
 
@@ -124,12 +132,15 @@ Most commands can be run on a Kubernetes pod specifying part of its name via the
 $ overdose -Kapp sh $container
 Searching for pod "app" in namespace "app"... 
 overdose: too many pods: app-staging app-test
+
 $ overdose -Kapp-t sh $container
 Searching for pod "app-t" in namespace "app": app-test
 / $
+
 $ uberdose -Kapp-t x $container uname -a
 Searching for pod "app-t" in namespace "app": app-test
 Linux app-test 4.19.121-linuxkit #1 SMP Tue Dec 1 17:50:32 UTC 2020 x86_64 Linux
+
 $ uberdose -Kapp-t -pdose/symfony sh
 Searching for pod "app-t" in namespace "app": app-tet
 Searching for Symfony container: web
