@@ -19,7 +19,7 @@ _node_container() {
 		_od_exec $service test -e $NODE_GUESTDIR/$NODE_HINT 2>/dev/null &&
 		printf "\b\b\b\b: %s\n" "$service" >&2 &&
 		echo $service &&
-		break
+		return
 	done
 
 	echo >&2
