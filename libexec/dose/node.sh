@@ -19,7 +19,12 @@ _node_container() {
 }
 
 _node_exec() {
-	_od_exec ${NODE_CONTAINER:-$(_node_container)} "$@"
+	_x_min_args 1 $#
+
+	: ${node_exec_CONTAINER:=${NODE_CONTAINER:-$(_node_container)}}
+	test -z $node_exec_CONTAINER && exit 1
+
+	_od_exec $node_exec_CONTAINER "$@"
 }
 
 _node_npm() {
@@ -40,7 +45,12 @@ _opt_N() {
 }
 
 _cmd_node_shell() {
-	_od_shell ${1:-${NODE_CONTAINER:-$(_node_container)}}
+	local container=$1
+
+	: ${container:=${NODE_CONTAINER:-$(_node_container)}}
+	test -z $container && exit 1
+
+	_od_shell $container
 }
 
 _alias_node_sh() {
@@ -93,7 +103,7 @@ _x_add_opt "-N CONTAINER" \
 _x_add_cmd "${_x_ns}shell|${_x_ns}sh [-u USER] [CONTAINER]" \
 	"Log into a container [${NODE_CONTAINER:-"Node's"}];;\
 -u Username or UID"
-_x_add_cmd "${_x_ns}execute|${_x_ns}x [-d] [-c CONTAINER] [-u USER] COMMAND [ARGS]" \
+_x_add_cmd "${_x_ns}exec|${_x_ns}x [-d] [-c CONTAINER] [-u USER] COMMAND [ARGS]" \
 	"Execute a command inside a container [${NODE_CONTAINER:-"Node's"}];;\
 -c Choose a different container;;\
 -d Run command in the background;;\
