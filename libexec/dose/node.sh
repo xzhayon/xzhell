@@ -13,6 +13,10 @@ _node_container() {
 	echo '$container' &&
 	return
 
+	if ! test -z $OD_K8SPOD; then
+		_od_pod "$OD_K8SPOD" || _x_die
+	fi
+
 	printf "Searching for Node container... " >&2
 
 	for service in $(_od_services); do
@@ -29,6 +33,10 @@ _node_container() {
 
 _node_exec() {
 	_x_min_args 1 $#
+
+	if ! test -z $OD_K8SPOD; then
+		_od_pod "$OD_K8SPOD" || _x_die
+	fi
 
 	: ${node_exec_CONTAINER:=${NODE_CONTAINER:-$(_node_container)}}
 	test -z $node_exec_CONTAINER && exit 1
@@ -55,6 +63,10 @@ _opt_N() {
 
 _cmd_node_shell() {
 	local container=$1
+
+	if ! test -z $OD_K8SPOD; then
+		_od_pod "$OD_K8SPOD" || _x_die
+	fi
 
 	: ${container:=${NODE_CONTAINER:-$(_node_container)}}
 	test -z $container && exit 1

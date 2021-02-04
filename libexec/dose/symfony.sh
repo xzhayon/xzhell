@@ -16,7 +16,7 @@ _symfony_container() {
 	printf "Searching for Symfony container... " >&2
 
 	for service in $(_od_services); do
-		_od_compose exec $service test -e $SYMFONY_GUESTDIR/$SYMFONY_HINT 2>/dev/null &&
+		_od_exec $service test -e $SYMFONY_GUESTDIR/$SYMFONY_HINT 2>/dev/null &&
 		printf "\b\b\b\b: %s\n" "$service" >&2 &&
 		echo $service &&
 		return
@@ -29,6 +29,10 @@ _symfony_container() {
 
 _symfony_exec() {
 	_x_min_args 1 $#
+
+	if ! test -z $OD_K8SPOD; then
+		_od_pod "$OD_K8SPOD" || _x_die
+	fi
 
 	: ${symfony_exec_CONTAINER:=${SYMFONY_CONTAINER:-$(_symfony_container)}}
 	test -z $symfony_exec_CONTAINER && exit 1
@@ -74,6 +78,10 @@ _opt_S() {
 
 _cmd_symfony_shell() {
 	local container=$1
+
+	if ! test -z $OD_K8SPOD; then
+		_od_pod "$OD_K8SPOD" || _x_die
+	fi
 
 	: ${container:=${SYMFONY_CONTAINER:-$(_symfony_container)}}
 	test -z $container && exit 1

@@ -44,7 +44,7 @@ _od_k8s() {
 }
 
 _od_pod() {
-	test -z $exec_POD ||
+	test -z $k8s_POD ||
 	return 0
 
 	_x_min_args 1 $#
@@ -52,7 +52,7 @@ _od_pod() {
 	local pod=$1 pods npods
 
 	test -n "$DRYRUN" &&
-	exec_POD='$pod' &&
+	k8s_POD='$pod' &&
 	return
 
 	printf 'Searching for pod "%s"... ' "$pod" >&2
@@ -67,8 +67,8 @@ _od_pod() {
 	echo >&2 && _x_yell too many pods: $(echo $pods) &&
 	return 1
 
-	exec_POD=$pods
-	printf "\b\b\b\b: %s\n" "$exec_POD" >&2
+	k8s_POD=$pods
+	printf "\b\b\b\b: %s\n" "$k8s_POD" >&2
 }
 
 _od_exec() {
@@ -104,14 +104,14 @@ _od_kexec() {
 	_od_pod $pod || _x_die
 
 	if test $# -eq 0; then
-		_od_k8s exec $exec_POD -it -c $container -- sh -c "$SHELLS"
+		_od_k8s exec $k8s_POD -it -c $container -- sh -c "$SHELLS"
 		return
 	fi
 
 	if _x_is_piped_in; then
-		_od_k8s exec $exec_POD -i -c $container -- "$@"
+		_od_k8s exec $k8s_POD -i -c $container -- "$@"
 	else
-		_od_k8s exec $exec_POD -it -c $container -- "$@"
+		_od_k8s exec $k8s_POD -it -c $container -- "$@"
 	fi
 }
 
@@ -120,6 +120,12 @@ _od_shell() {
 }
 
 _od_services() {
+	if ! test -z $OD_K8SPOD; then
+		_od_pod "$OD_K8SPOD" || _x_die
+		_od_k8s get pod "$k8s_POD" -o jsonpath="{.spec.containers[*].name}" | awk -v RS=" " '{ print }'
+		return $?
+	fi
+
 	_od_compose config --services
 }
 
