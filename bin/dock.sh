@@ -54,7 +54,7 @@ _cmd() {
 }
 
 _usage() {
-	echo usage: $(_x_self) [OPTIONS] IMAGE
+	echo usage: $(_x_self) [OPTIONS] IMAGE [COMMAND [ARGS]]
 }
 
 _x_add_opt "-C" \
