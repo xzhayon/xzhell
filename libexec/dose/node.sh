@@ -55,6 +55,30 @@ _opt_node_shell_u() {
 	_opt_exec_u "$@"
 }
 
+_cmd_node_exec() {
+	_node_exec "$@"
+}
+
+_alias_node_x() {
+	echo node_exec
+}
+
+_opts_node_exec() {
+	echo "c:du:"
+}
+
+_opt_node_exec_c() {
+	node_exec_CONTAINER="$@"
+}
+
+_opt_node_exec_d() {
+	_opt_exec_d "$@"
+}
+
+_opt_node_exec_u() {
+	_opt_exec_u "$@"
+}
+
 _cmd_node_npm() {
 	_node_npm "$@"
 }
@@ -68,6 +92,11 @@ _x_add_opt "-N CONTAINER" \
 
 _x_add_cmd "${_x_ns}shell|${_x_ns}sh [-u USER] [CONTAINER]" \
 	"Log into a container [${NODE_CONTAINER:-"Node's"}];;\
+-u Username or UID"
+_x_add_cmd "${_x_ns}execute|${_x_ns}x [-d] [-c CONTAINER] [-u USER] COMMAND [ARGS]" \
+	"Execute a command inside a container [${NODE_CONTAINER:-"Node's"}];;\
+-c Choose a different container;;\
+-d Run command in the background;;\
 -u Username or UID"
 _x_add_cmd "${_x_ns}npm [COMMAND [ARGS]]" \
 	"Run NPM into Node container"
