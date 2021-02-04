@@ -9,13 +9,22 @@ NODE_NPM=npm
 NODE_YARN=yarn
 
 _node_container() {
-	echo Searching for Node container... >&2
+	test -n "$DRYRUN" &&
+	echo '$container' &&
+	return
+
+	printf "Searching for Node container... " >&2
 
 	for service in $(_od_services); do
 		_od_exec $service test -e $NODE_GUESTDIR/$NODE_HINT 2>/dev/null &&
+		printf "\b\b\b\b: %s\n" "$service" >&2 &&
 		echo $service &&
 		break
 	done
+
+	echo >&2
+	_x_yell container not found
+	return 1
 }
 
 _node_exec() {
