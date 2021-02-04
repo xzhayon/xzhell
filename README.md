@@ -93,7 +93,7 @@ $ app sh -uroot $container
 #### Plugins
 `overdose` can be extended via plugins (_doses_). Apart from those shipped with the tool (`dose/node`, `dose/symfony`), _doses_ can be written to fulfill any kind of task.
 ```
-$ alias app='overdose -D$appDir -pdose/node -Nweb -papp:$dir/dose.sh'
+$ alias app='overdose -D$dir -pdose/node -Nweb -papp:$dir/dose.sh'
 
 $ app
 usage: overdose [OPTIONS] COMMAND [ARGS]
