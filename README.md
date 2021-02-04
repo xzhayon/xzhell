@@ -56,8 +56,7 @@ Deleted: sha256:e50c909a8df2b7c8b92a6e8730e210ebe98e5082871e66edd8ef4d90838cbd25
 ```
 
 ### overdose
-As the name suggests, this is [`docker-compose`](https://docs.docker.com/compose/reference/) on steroids (<b>over Do</b><i>cker Compo</i><b>se</b>). The tool is also available as `uberdose`, for those preferring a Kubernetes-like vibe (as a bonus point, "über" is the German word for "over").  
-It proxies `docker-compose` commands, offering some handy addition and a bit of help with configuring the execution path.
+As the name suggests, this is [`docker-compose`](https://docs.docker.com/compose/reference/) on steroids (<b>over Do</b><i>cker Compo</i><b>se</b>). It proxies `docker-compose` commands, offering some handy addition and a bit of help with configuring the execution path.
 ```
 usage: overdose [OPTIONS] COMMAND [ARGS]
 
@@ -127,7 +126,8 @@ $ app app:fixtures
 ```
 
 #### Kubernetes
-Most commands can be run on a Kubernetes pod specifying part of its name via the `-K` option. If the name is ambiguous, `overdose` will show a list of choices.
+Most commands can be run on a Kubernetes pod specifying part of its name via the `-K` option. If the name is ambiguous, `overdose` will show a list of choices.  
+The tool is also available as `uberdose`, for those preferring a Kubernetes-like vibe (as a bonus point, "über" is the German word for "over").
 ```
 $ overdose -Kapp sh $container
 Searching for pod "app" in namespace "app"... 
