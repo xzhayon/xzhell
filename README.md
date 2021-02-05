@@ -142,7 +142,7 @@ Searching for pod "app-t" in namespace "app": app-test
 Linux app-test 4.19.121-linuxkit #1 SMP Tue Dec 1 17:50:32 UTC 2020 x86_64 Linux
 
 $ uberdose -Kapp-t -pdose/symfony sh
-Searching for pod "app-t" in namespace "app": app-tet
+Searching for pod "app-t" in namespace "app": app-test
 Searching for Symfony container: web
 / $
 ```
