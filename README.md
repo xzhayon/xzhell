@@ -9,6 +9,7 @@ $ sh -c "$(curl -fsSL https://raw.githubusercontent.com/xzhavilla/xzhell/master/
 From now on, `xzh up` can be used to get new updates.
 
 ## Usage
+Most tools can be invoked with the `-n` option to simulate their execution.
 - [dock](#dock)
 - [overdose](#overdose)
 
